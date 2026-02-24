@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Prisma, Category } from "@prisma/client";
 import Link from "next/link";
 import { Suspense } from "react";
 import { prisma } from "@/lib/prisma";
@@ -15,10 +16,12 @@ export const revalidate = 60;
 
 type SearchParams = Promise<{ q?: string; category?: string }>;
 
+type CourseWithCategory = Prisma.CourseGetPayload<{ include: { category: true } }>;
+
 export default async function HomePage({ searchParams }: { searchParams: SearchParams }) {
   const { q, category } = await searchParams;
 
-  const [courses, categories] = await Promise.all([
+  const [courses, categories]: [CourseWithCategory[], Category[]] = await Promise.all([
     prisma.course.findMany({
       where: {
         published: true,

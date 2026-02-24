@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteCourseButton } from "@/components/delete-course-button";
@@ -6,8 +7,10 @@ import { DeleteCourseButton } from "@/components/delete-course-button";
 export const metadata: Metadata = { title: "講座管理" };
 export const dynamic = "force-dynamic";
 
+type CourseWithCategory = Prisma.CourseGetPayload<{ include: { category: true } }>;
+
 export default async function AdminCoursesPage() {
-  const courses = await prisma.course.findMany({
+  const courses: CourseWithCategory[] = await prisma.course.findMany({
     include: { category: true },
     orderBy: { createdAt: "desc" },
   });

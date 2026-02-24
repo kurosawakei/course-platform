@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -17,7 +18,11 @@ export default async function MyPage() {
 
   if (!user) redirect("/login");
 
-  const [progresses, totalPublished] = await Promise.all([
+  type ProgressWithCourse = Prisma.ProgressGetPayload<{
+    include: { course: { include: { category: true } } };
+  }>;
+
+  const [progresses, totalPublished]: [ProgressWithCourse[], number] = await Promise.all([
     prisma.progress.findMany({
       where: { userId: user.id },
       include: { course: { include: { category: true } } },

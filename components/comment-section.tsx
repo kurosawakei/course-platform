@@ -1,6 +1,11 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { CommentForm } from "./comment-form";
 import { CommentList } from "./comment-list";
+
+type CommentWithUser = Prisma.CommentGetPayload<{
+  include: { user: { select: { id: true; name: true; email: true; role: true } } };
+}>;
 
 type Props = {
   courseId: string;
@@ -8,7 +13,7 @@ type Props = {
 };
 
 export async function CommentSection({ courseId, currentUserId }: Props) {
-  const comments = await prisma.comment.findMany({
+  const comments: CommentWithUser[] = await prisma.comment.findMany({
     where: { courseId },
     include: { user: { select: { id: true, name: true, email: true, role: true } } },
     orderBy: { createdAt: "desc" },
