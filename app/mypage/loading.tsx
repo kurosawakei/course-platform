@@ -1,0 +1,24 @@
+export default function MyPageLoading() {
+  return (
+    <div className="max-w-[1340px] mx-auto px-4 sm:px-6 py-8 animate-pulse">
+      <div className="h-9 w-36 bg-[#e8e9eb] mb-6" />
+      <div className="border border-[#d1d7dc] bg-white p-6 mb-8">
+        <div className="h-4 w-24 bg-[#e8e9eb] mb-4" />
+        <div className="h-12 w-40 bg-[#e8e9eb] mb-4" />
+        <div className="h-2 bg-[#e8e9eb]" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i}>
+            <div className="aspect-video bg-[#e8e9eb] border border-[#d1d7dc]" />
+            <div className="pt-2 space-y-2">
+              <div className="h-4 bg-[#e8e9eb]" />
+              <div className="h-3 w-3/4 bg-[#e8e9eb]" />
+              <div className="h-5 w-16 bg-[#e8e9eb]" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
